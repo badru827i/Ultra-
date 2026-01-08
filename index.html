@@ -1,0 +1,127 @@
+https://github.com/badru827i/Ultra-.git
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ultra App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        body { background: #000; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        .samsung-fade { animation: samsungIn 3s ease-in-out forwards; }
+        @keyframes samsungIn { 0% { opacity: 0; letter-spacing: 1em; transform: scale(0.9); } 100% { opacity: 1; letter-spacing: 0.3em; transform: scale(1); } }
+        .bot-glow { box-shadow: 0 0 15px rgba(34, 197, 94, 0.4); }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const App = () => {
+            const [view, setView] = useState('intro');
+            const [user, setUser] = useState(null);
+            const [botOn, setBotOn] = useState(false);
+            const [timer, setTimer] = useState(20);
+
+            useEffect(() => {
+                if (view === 'intro') setTimeout(() => setView('login'), 4000);
+            }, [view]);
+
+            useEffect(() => {
+                let int;
+                if (botOn) {
+                    int = setInterval(() => setTimer(t => t <= 0 ? 20 : t - 1), 1000);
+                }
+                return () => clearInterval(int);
+            }, [botOn]);
+
+            const playTap = () => { if(navigator.vibrate) navigator.vibrate(40); };
+
+            if (view === 'intro') return (
+                <div className="h-screen flex items-center justify-center bg-black">
+                    <h1 className="samsung-fade text-3xl font-light text-white tracking-widest">WELCOME</h1>
+                </div>
+            );
+
+            if (view === 'login') return (
+                <div className="h-screen bg-neutral-950 flex flex-col justify-center p-8">
+                    <div className="bg-neutral-900 border border-neutral-800 p-8 rounded-[2.5rem] shadow-2xl">
+                        <h2 className="text-2xl font-bold text-center mb-8">Masuk Google</h2>
+                        <button onClick={() => { playTap(); setUser({name: 'Owner', role: 'owner', tiktok: '@king_owner'}); setView('main'); }} 
+                                className="w-full bg-white text-black font-bold py-4 rounded-2xl flex items-center justify-center gap-3 active:scale-95 transition">
+                            <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-5 h-5"/>
+                            admin@google.com
+                        </button>
+                    </div>
+                </div>
+            );
+
+            return (
+                <div className="min-h-screen bg-black text-white p-6 pb-24">
+                    <header className="flex justify-between items-center mb-10">
+                        <h1 className="text-xl font-black italic tracking-tighter">ULTRA<span className="text-blue-500">APP</span></h1>
+                        <div className="flex gap-3">
+                            {user?.role === 'owner' && <button onClick={()=>setView('admin')} className="p-3 bg-red-500/10 text-red-500 rounded-full border border-red-500/20"><i className="fa-solid fa-shield-halved"></i></button>}
+                            <button onClick={()=>setView('settings')} className="p-3 bg-neutral-900 rounded-full"><i className="fa-solid fa-gear"></i></button>
+                        </div>
+                    </header>
+
+                    <div className="space-y-6">
+                        <div className="bg-neutral-900 p-6 rounded-[2rem] flex items-center gap-4 border border-neutral-800">
+                            <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-2xl font-bold">O</div>
+                            <div>
+                                <h3 className="font-bold text-lg">{user.name}</h3>
+                                <p className="text-pink-500 text-xs font-bold">{user.tiktok} (Auto-Synced)</p>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                            <div onClick={()=>setView('dl')} className="bg-neutral-900 p-6 rounded-3xl text-center border border-neutral-800 active:scale-90 transition">
+                                <i className="fa-solid fa-download text-pink-500 text-2xl mb-2"></i>
+                                <p className="text-[10px] font-black uppercase tracking-widest">TikTok DL</p>
+                            </div>
+                            <div onClick={()=>setView('ai')} className="bg-neutral-900 p-6 rounded-3xl text-center border border-neutral-800 active:scale-90 transition">
+                                <i className="fa-solid fa-robot text-blue-500 text-2xl mb-2"></i>
+                                <p className="text-[10px] font-black uppercase tracking-widest">AI Assistant</p>
+                            </div>
+                        </div>
+
+                        <div className={`p-6 rounded-[2rem] border transition ${botOn ? 'bg-green-500/10 border-green-500/50 bot-glow' : 'bg-neutral-900 border-neutral-800'}`}>
+                            <div className="flex justify-between items-center">
+                                <div>
+                                    <h4 className="font-bold text-sm">Auto Share Bot</h4>
+                                    <p className="text-[10px] text-neutral-500 uppercase">Status: {botOn ? 'Aktif' : 'Off'}</p>
+                                </div>
+                                <button onClick={()=>{playTap(); setBotOn(!botOn)}} className={`w-12 h-7 rounded-full p-1 transition ${botOn ? 'bg-green-500' : 'bg-neutral-700'}`}>
+                                    <div className={`w-5 h-5 bg-white rounded-full transition transform ${botOn ? 'translate-x-5' : 'translate-x-0'}`}></div>
+                                </button>
+                            </div>
+                            {botOn && <div className="mt-4 text-[10px] font-bold text-green-500 animate-pulse uppercase tracking-widest">Menyalin 20 pautan... {timer}m</div>}
+                        </div>
+                    </div>
+
+                    {view === 'admin' && (
+                        <div className="fixed inset-0 bg-black z-50 p-6">
+                            <button onClick={()=>setView('main')} className="mb-6"><i className="fa-solid fa-arrow-left"></i></button>
+                            <h2 className="text-red-500 font-black text-xl mb-6 italic">OWNER SETTINGS</h2>
+                            <div className="space-y-4 bg-neutral-900 p-6 rounded-3xl border border-red-500/20">
+                                <p className="text-xs">Server Google Cloud: <span className="text-green-500">ONLINE</span></p>
+                                <button className="w-full bg-red-600 py-3 rounded-xl font-bold text-xs">RESET GLOBAL DATA</button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
+
